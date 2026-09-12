@@ -33,7 +33,6 @@ export const startOverdueScanner = () => {
               userId: task.assignedDeveloperId,
               taskId: task.id,
               type: NotificationType.TASK_OVERDUE,
-              title: 'Task Overdue',
               message: `Task #${task.taskNumber} (${task.title}) has passed its deadline.`,
             },
           });

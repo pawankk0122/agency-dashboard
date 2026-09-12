@@ -31,7 +31,6 @@ export class TaskService {
           userId: actor.userId,
           projectId: existing.projectId,
           taskId: existing.id,
-          action: 'STATUS_CHANGE',
           oldStatus,
           newStatus,
           details: logDetails,
@@ -43,10 +42,8 @@ export class TaskService {
       if (newStatus === TaskStatus.IN_REVIEW && existing.project.managerId !== actor.userId) {
         const notif = await tx.notification.create({
           data: {
-            userId: existing.project.managerId,
-            taskId: existing.id,
+userId: existing.project.managerId!,            taskId: existing.id,
             type: NotificationType.TASK_IN_REVIEW,
-            title: 'Task In Review',
             message: `${actor.name} submitted Task #${existing.taskNumber} for review`,
           },
         });

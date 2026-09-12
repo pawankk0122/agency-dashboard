@@ -19,10 +19,12 @@ const columns = [
   { key: 'DONE', label: 'Done' },
 ];
 
-export const TaskBoard: React.FC<{ tasks: Task[]; onUpdate: () => void }> = ({
-  tasks,
+export const TaskBoard: React.FC<{ tasks?: Task[]; onUpdate: () => void }> = ({
+  tasks = [],
   onUpdate,
 }) => {
+  const safeTasks = Array.isArray(tasks) ? tasks : [];
+
   const handleStatusChange = async (taskId: string, newStatus: string) => {
     try {
       await api.patch(`/tasks/${taskId}/status`, { status: newStatus });
@@ -34,15 +36,16 @@ export const TaskBoard: React.FC<{ tasks: Task[]; onUpdate: () => void }> = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-      {columns.map((col) => (
-        <div key={col.key} className="bg-slate-100/70 p-4 rounded-xl flex flex-col gap-3">
-          <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 mb-1">
-            {col.label} ({tasks.filter((t) => t.status === col.key).length})
-          </h4>
-          <div className="space-y-3">
-            {tasks
-              .filter((t) => t.status === col.key)
-              .map((task) => (
+      {columns.map((col) => {
+        const columnTasks = safeTasks.filter((t) => t.status === col.key);
+
+        return (
+          <div key={col.key} className="bg-slate-100/70 p-4 rounded-xl flex flex-col gap-3">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 mb-1">
+              {col.label} ({columnTasks.length})
+            </h4>
+            <div className="space-y-3">
+              {columnTasks.map((task) => (
                 <div
                   key={task.id}
                   className="bg-white p-3.5 rounded-lg shadow-sm border border-slate-200/60 flex flex-col gap-2"
@@ -87,9 +90,10 @@ export const TaskBoard: React.FC<{ tasks: Task[]; onUpdate: () => void }> = ({
                   </select>
                 </div>
               ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

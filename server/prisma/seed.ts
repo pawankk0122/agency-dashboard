@@ -42,13 +42,13 @@ async function main() {
 
   console.log('--- Creating 3 Projects ---');
   const project1 = await prisma.project.create({
-    data: { name: 'Alpha FinTech Portal', description: 'Real-time banking analytics platform', createdById: pm1.id },
+    data: { name: 'Alpha FinTech Portal', description: 'Real-time banking analytics platform', managerId: pm1.id },
   });
   const project2 = await prisma.project.create({
-    data: { name: 'HealthCare Mobile Sync', description: 'Patient monitoring dashboard', createdById: pm1.id },
+    data: { name: 'HealthCare Mobile Sync', description: 'Patient monitoring dashboard', managerId: pm1.id },
   });
   const project3 = await prisma.project.create({
-    data: { name: 'E-Commerce Core API', description: 'Scalable multi-tenant catalog service', createdById: pm2.id },
+    data: { name: 'E-Commerce Core API', description: 'Scalable multi-tenant catalog service', managerId: pm2.id },
   });
 
   // Assign PMs and Devs to Projects
@@ -77,40 +77,40 @@ async function main() {
 
   // Project 1 Tasks (includes 2 overdue tasks)
   const t1 = await prisma.task.create({
-    data: { title: 'Implement OAuth2 SSO', projectId: project1.id, assigneeId: devs[0].id, status: TaskStatus.IN_PROGRESS, priority: Priority.URGENT, dueDate: pastDate1, isOverdue: true },
+    data: { title: 'Implement OAuth2 SSO', projectId: project1.id, assignedDeveloperId: devs[0].id, status: TaskStatus.IN_PROGRESS, priority: Priority.URGENT, dueDate: pastDate1, isOverdue: true },
   });
   const t2 = await prisma.task.create({
-    data: { title: 'Postgres Connection Pooling', projectId: project1.id, assigneeId: devs[1].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: pastDate2, isOverdue: true },
+    data: { title: 'Postgres Connection Pooling', projectId: project1.id, assignedDeveloperId: devs[1].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: pastDate2, isOverdue: true },
   });
   const t3 = await prisma.task.create({
-    data: { title: 'Audit Trail Logging', projectId: project1.id, assigneeId: devs[0].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
+    data: { title: 'Audit Trail Logging', projectId: project1.id, assignedDeveloperId: devs[0].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
   });
   const t4 = await prisma.task.create({
-    data: { title: 'Latency Benchmarking', projectId: project1.id, assigneeId: devs[1].id, status: TaskStatus.DONE, priority: Priority.LOW, dueDate: futureDate1 },
+    data: { title: 'Latency Benchmarking', projectId: project1.id, assignedDeveloperId: devs[1].id, status: TaskStatus.DONE, priority: Priority.LOW, dueDate: futureDate1 },
   });
   const t5 = await prisma.task.create({
-    data: { title: 'Docker Compose Healthchecks', projectId: project1.id, assigneeId: devs[0].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate2 },
+    data: { title: 'Docker Compose Healthchecks', projectId: project1.id, assignedDeveloperId: devs[0].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate2 },
   });
 
   // Project 2 Tasks (5 tasks)
   await prisma.task.createMany({
     data: [
-      { title: 'HIPAA Compliance Check', projectId: project2.id, assigneeId: devs[1].id, status: TaskStatus.TODO, priority: Priority.URGENT, dueDate: futureDate1 },
-      { title: 'WebRTC Video Consult', projectId: project2.id, assigneeId: devs[0].id, status: TaskStatus.IN_PROGRESS, priority: Priority.HIGH, dueDate: futureDate2 },
-      { title: 'Push Notifications Integration', projectId: project2.id, assigneeId: devs[1].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
-      { title: 'Device Battery Optimization', projectId: project2.id, assigneeId: devs[0].id, status: TaskStatus.DONE, priority: Priority.LOW, dueDate: futureDate2 },
-      { title: 'EHR Export Endpoint', projectId: project2.id, assigneeId: devs[1].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate1 },
+      { title: 'HIPAA Compliance Check', projectId: project2.id, assignedDeveloperId: devs[1].id, status: TaskStatus.TODO, priority: Priority.URGENT, dueDate: futureDate1 },
+      { title: 'WebRTC Video Consult', projectId: project2.id, assignedDeveloperId: devs[0].id, status: TaskStatus.IN_PROGRESS, priority: Priority.HIGH, dueDate: futureDate2 },
+      { title: 'Push Notifications Integration', projectId: project2.id, assignedDeveloperId: devs[1].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
+      { title: 'Device Battery Optimization', projectId: project2.id, assignedDeveloperId: devs[0].id, status: TaskStatus.DONE, priority: Priority.LOW, dueDate: futureDate2 },
+      { title: 'EHR Export Endpoint', projectId: project2.id, assignedDeveloperId: devs[1].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate1 },
     ],
   });
 
   // Project 3 Tasks (5 tasks)
   await prisma.task.createMany({
     data: [
-      { title: 'Stripe Webhooks Handling', projectId: project3.id, assigneeId: devs[2].id, status: TaskStatus.IN_PROGRESS, priority: Priority.URGENT, dueDate: futureDate1 },
-      { title: 'Product Search Indexing', projectId: project3.id, assigneeId: devs[3].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate1 },
-      { title: 'Cart Redis Session Storage', projectId: project3.id, assigneeId: devs[2].id, status: TaskStatus.DONE, priority: Priority.MEDIUM, dueDate: futureDate2 },
-      { title: 'Automated Invoice PDFs', projectId: project3.id, assigneeId: devs[3].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
-      { title: 'Rate Limiting Middleware', projectId: project3.id, assigneeId: devs[2].id, status: TaskStatus.TODO, priority: Priority.LOW, dueDate: futureDate2 },
+      { title: 'Stripe Webhooks Handling', projectId: project3.id, assignedDeveloperId: devs[2].id, status: TaskStatus.IN_PROGRESS, priority: Priority.URGENT, dueDate: futureDate1 },
+      { title: 'Product Search Indexing', projectId: project3.id, assignedDeveloperId: devs[3].id, status: TaskStatus.TODO, priority: Priority.HIGH, dueDate: futureDate1 },
+      { title: 'Cart Redis Session Storage', projectId: project3.id, assignedDeveloperId: devs[2].id, status: TaskStatus.DONE, priority: Priority.MEDIUM, dueDate: futureDate2 },
+      { title: 'Automated Invoice PDFs', projectId: project3.id, assignedDeveloperId: devs[3].id, status: TaskStatus.IN_REVIEW, priority: Priority.MEDIUM, dueDate: futureDate1 },
+      { title: 'Rate Limiting Middleware', projectId: project3.id, assignedDeveloperId: devs[2].id, status: TaskStatus.TODO, priority: Priority.LOW, dueDate: futureDate2 },
     ],
   });
 
