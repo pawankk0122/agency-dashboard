@@ -19,9 +19,9 @@ const columns = [
   { key: 'DONE', label: 'Done' },
 ];
 
-export const TaskBoard: React.FC<{ tasks?: Task[]; onUpdate: () => void }> = ({
+export const TaskBoard: React.FC<{ tasks?: Task[]; onUpdate?: () => void }> = ({
   tasks = [],
-  onUpdate,
+  onUpdate = () => {},
 }) => {
   const safeTasks = Array.isArray(tasks) ? tasks : [];
 
